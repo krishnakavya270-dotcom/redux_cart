@@ -6,7 +6,6 @@ import View from './Pages/View'
 import Wishlist from './Pages/Wishlist'
 import Cart from './Pages/Cart'
 import Pnf from './Pages/Pnf'
-import Header from './Components/Header'
 import Footer from './Components/Footer'
 
 
@@ -17,7 +16,7 @@ function App() {
 
   return (
     <>
-    <Header/>
+    
       <Routes>
         <Route path='/' element={<Products />} />
         <Route path='/Products/:id' element={<View />} />
