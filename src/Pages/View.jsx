@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist } from '../redux/slices/wishlistSlice';
 import Swal from 'sweetalert2';
+import { addToCart } from '../redux/slices/cartSlice';
 
 function View() {
 
@@ -14,6 +15,7 @@ function View() {
   const {allProducts}=useSelector(state=>state.productReducer)
   const [product,setProduct] = useState([])
   const userWishlist = useSelector(state=>state.wishlistReducer)
+  const userCart=useSelector(state=>state.cartReducer)
   const dispatch=useDispatch()
   console.log(userWishlist);
   
@@ -35,6 +37,21 @@ function View() {
       dispatch(addToWishlist(product))
     }
   }
+
+
+   const handleCart = () =>{
+    const existingItem = userCart?.find(item=>item?.id==product?.id)
+     dispatch(addToCart(product))
+      Swal.fire({
+        title:"success",
+        text:existingItem? `${existingItem.title} Quantity incremented` : "product added to your cart",
+        icon:"success",
+        confirmButtonText:"ok"
+      })
+    
+     
+    
+  }
   
   
 
@@ -47,7 +64,7 @@ function View() {
             <img style={{ width: '300px' }} className='img-fluid mt-3' src={product?.thumbnail} alt="product" />
             <div className='d-flex justify-content-center gap-5 mt-n5'>
               <button onClick={handleWishlist}  className='btn btn-success rounded'>Add To Wishlist</button>
-              <button className='btn btn-primary rounded'>Add To Cart</button>
+              <button onClick={handleCart} className='btn btn-primary rounded'>Add To Cart</button>
             </div>
           </div>
           <div className='col-lg-6'>
