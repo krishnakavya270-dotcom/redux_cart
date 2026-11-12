@@ -14,14 +14,31 @@ const cartSlice = createSlice({
             } else {
                 state.push({ ...action.payload, quantity: 1, totalprice: action.payload.price })
             }
+        },
+        //remove cart item
+        removeCartItem:(state,action)=>{
+         return   state.filter(item=>item.id!=action.payload)
+        },
+
+        incrementCart:(state,action)=>{
+            const existingProduct = state.find(item=>item.id==action.payload)
+            const remainingProduct = state.filter(item=>item.id!=action.payload)
+            existingProduct.quantity += 1
+            existingProduct.totalprice = existingProduct.quantity * existingProduct.price
+            state = [...remainingProduct,existingProduct] 
+        },
+        decrementCart:(state,action)=>{
+            const existingProduct = state.find(item=>item.id==action.payload)
+            const remainingProduct = state.filter(item=>item.id!=action.payload)
+            existingProduct.quantity -= 1
+            existingProduct.totalprice = existingProduct.quantity * existingProduct.price
+            state = [...remainingProduct,existingProduct] 
+        },
+        emptyCart:(state)=>{
+            return[]
         }
     }
 })
 
- export const {addToCart} =cartSlice.actions
+ export const {addToCart,removeCartItem,incrementCart,decrementCart,emptyCart} =cartSlice.actions
  export default cartSlice.reducer 
-
-
-//  removeCartItem:(state,action)=>{
-//             return state.filter(item=>item.id!=action.payload)
-//         }
