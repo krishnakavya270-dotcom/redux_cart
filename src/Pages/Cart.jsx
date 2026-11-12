@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Header from '../Components/Header'
 import { useDispatch, useSelector } from "react-redux"
 import { decrementCart, emptyCart, incrementCart, removeCartItem } from "../redux/slices/cartSlice"
 import { useEffect, useState } from "react"
+import Swal from "sweetalert2"
 
 function Cart() {
   const userCart = useSelector(state => state.cartReducer)
   const dispatch = useDispatch()
+  const navigate=useNavigate()
   const [cartTotal,setCartTotal] = useState(0)
 
   useEffect(()=>{
@@ -20,6 +22,19 @@ function Cart() {
       dispatch(removeCartItem(product.id))
     }
   }
+
+  const handleCheckout = () =>{
+      dispatch(emptyCart())
+      Swal.fire({
+        title:"order placed successsfully",
+        text:"Thank you for purchasing with us",
+        icon:"success",
+        confirmButtonText:"ok"
+      })
+      navigate('/')
+
+  }
+
   return (
     <>
       <Header />
@@ -70,7 +85,7 @@ function Cart() {
                 <div className="border shadow p-5 rounded text-center">
                   <h3>Total Amount : <span className="text-danger">$ {cartTotal} </span></h3>
                   <hr />
-                  <button className="btn btn-success w-75">CheckOut</button>
+                  <button onClick={handleCheckout} className="btn btn-success w-75">CheckOut</button>
 
                 </div>
               </div>
